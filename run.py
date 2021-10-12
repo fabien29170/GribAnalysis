@@ -6,6 +6,8 @@ grbs = pygrib.open('../../.xygrib/grib/test.grb2')
 
 grbComposanteUWind = grbs.select(name='10 metre U wind component')
 grbComposanteVWind = grbs.select(name='10 metre V wind component')
+
+#Pour calculer nbr d'itérations, prendre la dernière analDate et faire la soustraction
 NbrPasdeTemps=len(grbComposanteUWind)
 PasdeTemps=datetime.timedelta(hours=1)
 
@@ -30,7 +32,8 @@ for t in range(NbrPasdeTemps):
                 chaineOutput=str(tabV[1][j][i])+','+str(longitude)+',V='+str(V)+','+gDate.isoformat()
                 chaineOutput.replace(" ","")
                 print(chaineOutput)
-                Angle=numpy.arctan(U/V)/math.pi*180
+                #Utiliser Arctan2 qui gère le signe de l'angle directement
+                Angle=numpy.arctan(V/U)/math.pi*180
                 print ('Angle',Angle)
                 Vitesse=math.sqrt(U*U+V*V)*3600/1852
                 print ('Vitesse',Vitesse)
